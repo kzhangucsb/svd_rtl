@@ -25,8 +25,8 @@ parameter
 	DATA_WIDTH = 27,
 	PROD_WIDTH = 48,
 	DATA_PARA  = 64,
-	COL_A_MAX  = 16384,
-	COL_U_MAX  = 256
+	COL_A_MAX  = 252,
+	COL_U_MAX  = 4
 )(
 	// axi-s index input
 	input  [32:0] ind_tdata,
@@ -41,15 +41,15 @@ parameter
 	output                            mat_a_rd_clk,
 	input  [DATA_WIDTH*DATA_PARA-1:0] mat_a_rd_dout,
 	output                            mat_a_rd_en,
-	// memory_u 
-	output [31:0]                     mat_u_wr_addr,
-	output                            mat_u_wr_clk,
-	output [DATA_WIDTH*DATA_PARA-1:0] mat_u_wr_din,
-	output                            mat_u_wr_we,
-	output [31:0]                     mat_u_rd_addr,
-	output                            mat_u_rd_clk,
-	input  [DATA_WIDTH*DATA_PARA-1:0] mat_u_rd_dout,
-	output                            mat_u_rd_en,
+	// // memory_u 
+	// output [31:0]                     mat_u_wr_addr,
+	// output                            mat_u_wr_clk,
+	// output [DATA_WIDTH*DATA_PARA-1:0] mat_u_wr_din,
+	// output                            mat_u_wr_we,
+	// output [31:0]                     mat_u_rd_addr,
+	// output                            mat_u_rd_clk,
+	// input  [DATA_WIDTH*DATA_PARA-1:0] mat_u_rd_dout,
+	// output                            mat_u_rd_en,
 	// memory_amp
 	output reg [15:0]                 amp_wr_addr,
 	output                            amp_wr_clk,
@@ -58,6 +58,8 @@ parameter
 	// data size
 	input  [15:0] col_a,
 	input  [15:0] col_u,
+	// control
+	output done,
 	// clk
 	input  clk,
 	input  rst_n
@@ -66,7 +68,7 @@ parameter
 reg signed [15:0] cnt_memload;
 
 
-wire [15:0] col_max;
+// wire [15:0] col_max;
 
 wire mat_a_valid;
 wire mat_u_valid;
@@ -76,9 +78,9 @@ wire mat_u_last;
 wire mat_sort;
 
 wire [DATA_WIDTH-1:0] mat_a_data [DATA_PARA-1:0];
-wire [DATA_WIDTH-1:0] mat_u_data [DATA_PARA-1:0];
+// wire [DATA_WIDTH-1:0] mat_u_data [DATA_PARA-1:0];
 reg  [DATA_WIDTH-1:0] mat_a_data_r [DATA_PARA-1:0];
-reg  [DATA_WIDTH-1:0] mat_u_data_r [DATA_PARA-1:0];
+// reg  [DATA_WIDTH-1:0] mat_u_data_r [DATA_PARA-1:0];
 
 wire [PROD_WIDTH-1:0] prod_a_a [DATA_PARA-1:0];
 wire [PROD_WIDTH-1:0] prod_a_b [DATA_PARA-1:0];
@@ -123,33 +125,35 @@ reg  sn_cs_valid_r;
 reg  signed [15:0] cnt_memstore;
 
 wire [DATA_WIDTH*DATA_PARA-1:0] mat_a_fifo_dout;
-wire [DATA_WIDTH*DATA_PARA-1:0] mat_u_fifo_dout;
+// wire [DATA_WIDTH*DATA_PARA-1:0] mat_u_fifo_dout;
 wire [DATA_WIDTH-1:0] mat_a_fifo_data [DATA_PARA-1:0];
-wire [DATA_WIDTH-1:0] mat_u_fifo_data [DATA_PARA-1:0];
-reg  mat_a_fifo_tready;
+// wire [DATA_WIDTH-1:0] mat_u_fifo_data [DATA_PARA-1:0];
+wire mat_a_fifo_tready;
 wire mat_a_fifo_tlast;
-reg  mat_u_fifo_tready;
+// reg  mat_u_fifo_tready;
 wire mat_u_fifo_tlast;
-wire mat_fifo_tlast;
+// wire mat_fifo_tlast;
 
 wire [DATA_WIDTH-1:0] mat_a_rot_1 [DATA_PARA-1:0];
 wire [DATA_WIDTH-1:0] mat_a_rot_2 [DATA_PARA-1:0];
-wire [DATA_WIDTH-1:0] mat_u_rot_1 [DATA_PARA-1:0];
-wire [DATA_WIDTH-1:0] mat_u_rot_2 [DATA_PARA-1:0];
+// wire [DATA_WIDTH-1:0] mat_u_rot_1 [DATA_PARA-1:0];
+// wire [DATA_WIDTH-1:0] mat_u_rot_2 [DATA_PARA-1:0];
 wire [15:0] cnt_memstore_rot;
 wire mat_rot_tlast;
 
 reg  [DATA_WIDTH-1:0] mat_a_rot_sum_1 [DATA_PARA-1:0];
 reg  [DATA_WIDTH-1:0] mat_a_rot_sum_2 [DATA_PARA-1:0];
-reg  [DATA_WIDTH-1:0] mat_u_rot_sum_1 [DATA_PARA-1:0];
-reg  [DATA_WIDTH-1:0] mat_u_rot_sum_2 [DATA_PARA-1:0];
+// reg  [DATA_WIDTH-1:0] mat_u_rot_sum_1 [DATA_PARA-1:0];
+// reg  [DATA_WIDTH-1:0] mat_u_rot_sum_2 [DATA_PARA-1:0];
 reg  [15:0] cnt_memstore_rot_sum;
 reg  mat_rot_sum_tlast;
 //reg  [15:0] cnt_memstore_rot_sum_r;
 
 reg  [DATA_WIDTH-1:0] mat_a_din_data [DATA_PARA-1:0];
-reg  [DATA_WIDTH-1:0] mat_u_din_data [DATA_PARA-1:0];
+// reg  [DATA_WIDTH-1:0] mat_u_din_data [DATA_PARA-1:0];
 reg  [31:0]           ind_memstore;
+
+wire ind_memstore_valid;
 
 
 genvar i;
@@ -162,8 +166,8 @@ assign mat_u_rd_clk = clk;
 assign amp_wr_clk   = clk;
 
 // load counter
-assign col_max = (col_a > col_u) ? (col_a * 2) : (col_u * 2);
-assign ind_tready = (cnt_memload >= $signed(col_max - 1));
+// assign col_max =  (col_a * 2) + (col_u * 2);
+assign ind_tready = (cnt_memload >= (2 * (COL_A_MAX + col_u) - 1));
 
 always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memload
 	if(~rst_n) begin
@@ -175,7 +179,10 @@ always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memload
 			end
 		end else begin
 			cnt_memload <= cnt_memload + 1;
-			if (cnt_memload >= (col_max - 1)) begin
+			if ((cnt_memload >= col_a * 2 - 1) & (cnt_memload < COL_A_MAX * 2)) begin
+				cnt_memload <= COL_A_MAX * 2;
+			end
+			if (cnt_memload >= (2 * (COL_A_MAX + col_u) - 1)) begin
 				if (ind_tvalid) begin
 					cnt_memload <= 0;
 				end else begin
@@ -187,24 +194,25 @@ always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memload
 end
 
 // fetch data from memory
-assign mat_a_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) * COL_A_MAX + cnt_memload[15:1];
-assign mat_u_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) * COL_U_MAX + cnt_memload[15:1];
-assign mat_a_rd_en   = (cnt_memload != -1) & (cnt_memload[15:1] < col_a);
-assign mat_u_rd_en   = (cnt_memload != -1) & (cnt_memload[15:1] < col_u);
+assign mat_a_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) 
+	* (COL_A_MAX + COL_U_MAX) + cnt_memload[15:1];
+// assign mat_u_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) * COL_U_MAX + cnt_memload[15:1];
+assign mat_a_rd_en   = (cnt_memload != -1);
+// assign mat_u_rd_en   = (cnt_memload != -1) & (cnt_memload[15:1] < col_u);
 
-c_shift_ram_0 mat_a_valid_shift (mat_a_rd_en, clk, mat_a_valid);
-c_shift_ram_0 mat_u_valid_shift (mat_u_rd_en, clk, mat_u_valid);
+c_shift_ram_0 mat_a_valid_shift ((cnt_memload != -1 & cnt_memload <  (COL_A_MAX * 2)), clk, mat_a_valid);
+c_shift_ram_0 mat_u_valid_shift ((cnt_memload != -1 & cnt_memload >= (COL_A_MAX * 2)), clk, mat_u_valid);
 c_shift_ram_0 mat_even_shift    (cnt_memload[0], clk, mat_even);
 c_shift_ram_0 mat_sort_shift    (ind_tdata[32] , clk, mat_sort);
-c_shift_ram_0 mat_a_last_shift  ((cnt_memload == col_a * 2 - 1) , clk, mat_a_last);
-c_shift_ram_0 mat_u_last_shift  ((cnt_memload == col_u * 2 - 1) , clk, mat_u_last);
+c_shift_ram_0 mat_a_last_shift  ((cnt_memload == 2 * col_a - 1) , clk, mat_a_last);
+c_shift_ram_0 mat_u_last_shift  ((cnt_memload == 2 * (COL_A_MAX + col_u) - 1), clk, mat_u_last);
 
 for (i = 0; i < DATA_PARA; i = i + 1) begin
 	assign mat_a_data[i] = mat_a_rd_dout[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH];
-	assign mat_u_data[i] = mat_u_rd_dout[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH];
+	//assign mat_u_data[i] = mat_u_rd_dout[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH];
 	always_ff @(posedge clk) begin : proc_mat_data_r
 		mat_a_data_r[i] <= mat_a_data[i];
-		mat_u_data_r[i] <= mat_u_data[i];
+		//mat_u_data_r[i] <= mat_u_data[i];
 	end
 end
 
@@ -212,28 +220,30 @@ end
 axis_data_fifo_w27 fifo_mat_a(
 	.s_axis_aclk    (clk), 
 	.s_axis_aresetn (rst_n), 
-	.s_axis_tvalid  (mat_a_valid), 
+	.s_axis_tvalid  (mat_a_valid | mat_u_valid), 
 	.s_axis_tready  (), 
 	.s_axis_tdata   (mat_a_rd_dout), 
-	.s_axis_tlast   (mat_a_last), 
+	.s_axis_tlast   (mat_u_last), 
+	.s_axis_tuser   (mat_a_last),
 	.m_axis_tvalid  (), 
 	.m_axis_tready  (mat_a_fifo_tready),
 	.m_axis_tdata   (mat_a_fifo_dout),
-	.m_axis_tlast   (mat_a_fifo_tlast) 
+	.m_axis_tlast   (mat_u_fifo_tlast),
+	.m_axis_tuser   (mat_a_fifo_tlast)
 );
 
-axis_data_fifo_w27 fifo_mat_u(
-	.s_axis_aclk    (clk), 
-	.s_axis_aresetn (rst_n), 
-	.s_axis_tvalid  (mat_u_valid), 
-	.s_axis_tready  (), 
-	.s_axis_tdata   (mat_u_rd_dout),
-	.s_axis_tlast   (mat_u_last),  
-	.m_axis_tvalid  (), 
-	.m_axis_tready  (mat_u_fifo_tready),
-	.m_axis_tdata   (mat_u_fifo_dout),
-	.m_axis_tlast   (mat_u_fifo_tlast)
-);
+// axis_data_fifo_w27 fifo_mat_u(
+// 	.s_axis_aclk    (clk), 
+// 	.s_axis_aresetn (rst_n), 
+// 	.s_axis_tvalid  (mat_u_valid), 
+// 	.s_axis_tready  (), 
+// 	.s_axis_tdata   (mat_u_rd_dout),
+// 	.s_axis_tlast   (mat_u_last),  
+// 	.m_axis_tvalid  (), 
+// 	.m_axis_tready  (mat_u_fifo_tready),
+// 	.m_axis_tdata   (mat_u_fifo_dout),
+// 	.m_axis_tlast   (mat_u_fifo_tlast)
+// );
 
 //index fifo 
 
@@ -253,7 +263,7 @@ axis_data_fifo_32 fifo_ind_2(
 	.s_axis_tvalid  (ind_tready), 
 	.s_axis_tready  (), 
 	.s_axis_tdata   (ind_tdata),
-	.m_axis_tvalid  (), 
+	.m_axis_tvalid  (ind_memstore_valid), 
 	.m_axis_tready  (mat_rot_sum_tlast),
 	.m_axis_tdata   (ind_memstore)
 );
@@ -311,7 +321,7 @@ cordic_atan cordic_atan_inst (
 	.aresetn                 (rst_n), 
 	.s_axis_cartesian_tvalid (autocorr_b_valid), 
 	.s_axis_cartesian_tuser  (corr_reverse),
-	.s_axis_cartesian_tdata  ({5'h0, autocorr_bma[PROD_WIDTH-1:PROD_WIDTH-27], 5'h0, corr_a_b[PROD_WIDTH-2:PROD_WIDTH-28]}), 
+	.s_axis_cartesian_tdata  ({corr_a_b[PROD_WIDTH-2:PROD_WIDTH-33], autocorr_bma[PROD_WIDTH-1:PROD_WIDTH-32]}), 
 	.m_axis_dout_tvalid      (angle_valid), 
 	.m_axis_dout_tuser       (angle_reverse),
 	.m_axis_dout_tdata       ({angle_nc, angle})
@@ -324,7 +334,7 @@ cordic_sincos cordic_sincos_inst(
 	.s_axis_phase_tvalid     (angle_valid), 
   	.s_axis_phase_tdata      ({5'h0, angle_div2}), 
   	.m_axis_dout_tvalid      (sn_cs_valid), 
-  	.m_axis_dout_tdata       ({cs_nc, cs, sn_nc, sn})
+  	.m_axis_dout_tdata       ({sn_nc, sn, cs_nc, cs})
 );
 
 always_ff @(posedge clk) begin : proc_sn_cs
@@ -343,36 +353,27 @@ always_ff @(posedge clk or negedge rst_n) begin : proc_sn_cs_valid_r
 end
 
 // store counter
-assign mat_fifo_tlast = (mat_a_fifo_tlast | ~mat_a_fifo_tready) & (mat_u_fifo_tlast | ~mat_u_fifo_tready);
+//assign mat_fifo_tlast = (mat_a_fifo_tlast | ~mat_a_fifo_tready) & (mat_u_fifo_tlast | ~mat_u_fifo_tready);
+assign mat_a_fifo_tready = (cnt_memstore != -1);
 always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memstore
 	if(~rst_n) begin
 		cnt_memstore <= -1;
-		mat_a_fifo_tready <= 0;
-		mat_u_fifo_tready <= 0;
+
 	end else begin
 		if (cnt_memstore == -1) begin
 			if (sn_cs_valid) begin
 				cnt_memstore <= 0;
-				mat_a_fifo_tready <= 1;
-				mat_u_fifo_tready <= 1;
 			end
 		end else begin
 			cnt_memstore <= cnt_memstore + 1;
 			if (mat_a_fifo_tlast) begin
-				mat_a_fifo_tready <= 0;
+				cnt_memstore <= COL_A_MAX * 2;
 			end
 			if (mat_u_fifo_tlast) begin
-				mat_u_fifo_tready <= 0;
-			end
-			if (mat_fifo_tlast) begin
 				if (sn_cs_valid) begin
 					cnt_memstore <= 0;
-					mat_a_fifo_tready <= 1;
-					mat_u_fifo_tready <= 1;
 				end else begin
 					cnt_memstore <= -1;
-					mat_a_fifo_tready <= 0;
-					mat_u_fifo_tready <= 0;
 				end
 			end
 		end
@@ -382,46 +383,46 @@ end
 // rotate
 for (i = 0; i < DATA_PARA; i = i + 1) begin
 	assign mat_a_fifo_data[i] = mat_a_fifo_dout[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH];
-	assign mat_u_fifo_data[i] = mat_u_fifo_dout[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH];
+	// assign mat_u_fifo_data[i] = mat_u_fifo_dout[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH];
 
 	mult_gen_1 multi_rot_a1(
 		.CLK(clk), 
 		.A(mat_a_fifo_data[i]), 
-		.B(cnt_memstore[0] ? cs_r : sn_r),
+		.B(~cnt_memstore[0] ? cs_r : -sn_r),
 		.P(mat_a_rot_1[i])
 	);
 	mult_gen_1 multi_rot_a2(
 		.CLK(clk), 
 		.A(mat_a_fifo_data[i]), 
-		.B(cnt_memstore[0] ? -sn_r : cs_r),
+		.B(~cnt_memstore[0] ? sn_r : cs_r),
 		.P(mat_a_rot_2[i])
 	);
-	mult_gen_1 multi_rot_u1(
-		.CLK(clk), 
-		.A(mat_u_fifo_data[i]), 
-		.B(cnt_memstore[0] ? cs_r : sn_r),
-		.P(mat_u_rot_1[i])
-	);
-	mult_gen_1 multi_rot_u2(
-		.CLK(clk), 
-		.A(mat_u_fifo_data[i]), 
-		.B(cnt_memstore[0] ? -sn_r : cs_r),
-		.P(mat_u_rot_2[i])
-	);
+	// mult_gen_1 multi_rot_u1(
+	// 	.CLK(clk), 
+	// 	.A(mat_u_fifo_data[i]), 
+	// 	.B(cnt_memstore[0] ? cs_r : sn_r),
+	// 	.P(mat_u_rot_1[i])
+	// );
+	// mult_gen_1 multi_rot_u2(
+	// 	.CLK(clk), 
+	// 	.A(mat_u_fifo_data[i]), 
+	// 	.B(cnt_memstore[0] ? -sn_r : cs_r),
+	// 	.P(mat_u_rot_2[i])
+	// );
 	always_ff @(posedge clk) begin : proc_mat_a_rot_sum
 		mat_a_rot_sum_1[i] <= mat_a_rot_1[i];
-		mat_u_rot_sum_1[i] <= mat_u_rot_1[i];
+		// mat_u_rot_sum_1[i] <= mat_u_rot_1[i];
 		if(cnt_memstore_rot[0] == 0) begin
 			mat_a_rot_sum_2[i] <= mat_a_rot_2[i];
-			mat_u_rot_sum_2[i] <= mat_u_rot_2[i];
+			// mat_u_rot_sum_2[i] <= mat_u_rot_2[i];
 		end else begin
 			mat_a_rot_sum_2[i] <= mat_a_rot_2[i] + mat_a_rot_sum_2[i];
-			mat_u_rot_sum_2[i] <= mat_u_rot_2[i] + mat_u_rot_sum_2[i];
+			// mat_u_rot_sum_2[i] <= mat_u_rot_2[i] + mat_u_rot_sum_2[i];
 		end
 	end
 end
 
-c_shift_ram_2 cnt_memstore_shift  ({mat_fifo_tlast, cnt_memstore} , clk, {mat_rot_tlast, cnt_memstore_rot});
+c_shift_ram_2 cnt_memstore_shift  ({mat_u_fifo_tlast, cnt_memstore} , clk, {mat_rot_tlast, cnt_memstore_rot});
 always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memstore_rot_sum
 	if(~rst_n) begin
 		cnt_memstore_rot_sum <= -1;
@@ -433,21 +434,23 @@ always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memstore_rot_sum
 end
 
 //write back
-assign mat_a_wr_addr = ((~cnt_memstore_rot_sum[0]) ? ind_memstore[31:16] : ind_memstore[15:0]) * COL_A_MAX + cnt_memstore_rot_sum[15:1];
-assign mat_u_wr_addr = ((~cnt_memstore_rot_sum[0]) ? ind_memstore[31:16] : ind_memstore[15:0]) * COL_U_MAX + cnt_memstore_rot_sum[15:1];
-assign mat_a_wr_we   = (cnt_memstore_rot_sum != -1) & (cnt_memstore_rot_sum[15:1] < col_a);
-assign mat_u_wr_we   = (cnt_memstore_rot_sum != -1) & (cnt_memstore_rot_sum[15:1] < col_u);
+assign mat_a_wr_addr = ((~cnt_memstore_rot_sum[0]) ? ind_memstore[31:16] : ind_memstore[15:0]) * (COL_A_MAX + COL_U_MAX) + cnt_memstore_rot_sum[15:1];
+// assign mat_u_wr_addr = ((~cnt_memstore_rot_sum[0]) ? ind_memstore[31:16] : ind_memstore[15:0]) * COL_U_MAX + cnt_memstore_rot_sum[15:1];
+assign mat_a_wr_we   = (cnt_memstore_rot_sum != -1);
+// assign mat_u_wr_we   = (cnt_memstore_rot_sum != -1) & (cnt_memstore_rot_sum[15:1] < col_u);
 for (i = 0; i < DATA_PARA; i = i + 1) begin
 	always_comb begin : proc_mat_wr_din
 		if (~cnt_memstore_rot_sum[0]) begin
 			mat_a_din_data[i] = mat_a_rot_sum_1[i] + mat_a_rot_1[i];
-			mat_u_din_data[i] = mat_u_rot_sum_1[i] + mat_u_rot_1[i];
+			// mat_u_din_data[i] = mat_u_rot_sum_1[i] + mat_u_rot_1[i];
 		end else begin
 			mat_a_din_data[i] = mat_a_rot_sum_2[i];
-			mat_u_din_data[i] = mat_u_rot_sum_2[i];
+			// mat_u_din_data[i] = mat_u_rot_sum_2[i];
 		end
 	end
 	assign mat_a_wr_din[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH] = mat_a_din_data[i];
-	assign mat_u_wr_din[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH] = mat_u_din_data[i];
+	// assign mat_u_wr_din[(i+1)*DATA_WIDTH-1 : i*DATA_WIDTH] = mat_u_din_data[i];
 end
+
+assign done = ~(ind_memstore_valid | mat_a_wr_we);
 endmodule
