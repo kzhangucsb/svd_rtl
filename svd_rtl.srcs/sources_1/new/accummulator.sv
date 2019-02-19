@@ -51,6 +51,39 @@ end
 
 endmodule // sum_64
 
+
+module sum_128 #(
+parameter
+	DATA_WIDTH = 48
+)(
+	input  clk,
+	input  [DATA_WIDTH-1:0] din [127:0],
+	output reg [DATA_WIDTH-1:0] dout
+);
+
+reg [DATA_WIDTH-1:0] sum_l1 [31:0];
+reg [DATA_WIDTH-1:0] sum_l2 [7:0];
+
+genvar i;
+
+for (i = 0; i < 32; i = i + 1) begin
+	always_ff @(posedge clk) begin : proc_sum_l1
+		sum_l1[i] <= din[i*4] + din[i*4+1] + din[i*4+2] + din[i*4+3];
+	end
+end
+
+for (i = 0; i < 8; i = i + 1) begin
+	always_ff @(posedge clk) begin : proc_sum_l2
+		sum_l2[i] <= sum_l1[i*4] + sum_l1[i*4+1] + sum_l1[i*4+2] + sum_l1[i*4+3];
+	end
+end
+
+always_ff @(posedge clk) begin : proc_dout
+	dout <= sum_l2[0] + sum_l2[1] + sum_l2[2] + sum_l2[3] + sum_l2[4] + sum_l2[5] + sum_l2[6] + sum_l2[7];
+end
+
+endmodule // sum_64
+
 module accummulator #(
 parameter
 	DATA_WIDTH = 48

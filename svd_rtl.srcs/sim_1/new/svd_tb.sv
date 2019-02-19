@@ -24,9 +24,9 @@ module svd_tb#(
 parameter
 	DATA_WIDTH = 27,
 	PROD_WIDTH = 48,
-	DATA_PARA  = 64,
-	COL_A_MAX  = 12,
-	COL_U_MAX  = 4
+	DATA_PARA  = 128,
+	COL_A_MAX  = 6,
+	COL_U_MAX  = 2
 )();
 
 
@@ -67,6 +67,7 @@ reg  [DATA_WIDTH*DATA_PARA-1:0] mat_a_mem [0:4095];
 // reg  [DATA_WIDTH*DATA_PARA-1:0] mat_u_mem [0:1023];
 reg  [PROD_WIDTH-1:0] amp_mem [0:255];
 reg  [31:0] ind_mem[0:32639];
+reg  [31:0] ind_mem_sort[0:1791];
 reg  [15:0] ind_cnt;
 reg  [15:0] itr_cnt;
 
@@ -75,8 +76,8 @@ reg  [31:0] mat_a_rd_addr_r2;
 reg  [31:0] mat_u_rd_addr_r1;
 reg  [31:0] mat_u_rd_addr_r2;
 
-assign col_a = 5;
-assign col_u = 4;
+assign col_a = 3;
+assign col_u = 1;
 
 always_ff @(posedge mat_a_rd_clk) begin 
 	mat_a_rd_addr_r1 <= mat_a_rd_addr;
@@ -87,6 +88,12 @@ end
 always_ff @(posedge mat_a_wr_clk) begin 
 	if (mat_a_wr_we) begin
 		mat_a_mem[mat_a_wr_addr] <= mat_a_wr_din;
+	end
+end
+
+always_ff @(posedge amp_wr_clk) begin 
+	if (amp_wr_we) begin
+		amp_mem[amp_wr_addr] <= amp_wr_din;
 	end
 end
 
@@ -102,7 +109,7 @@ end
 // 	end
 // end
 
-assign ind_tdata = {(itr_cnt >= 7), ind_mem[ind_cnt]};
+assign ind_tdata = {(itr_cnt >= 7), (itr_cnt >= 7) ? ind_mem_sort[ind_cnt] : ind_mem[ind_cnt]};
 
 always_ff @(posedge clk or negedge rst_n) begin 
 	if(~rst_n) begin
@@ -110,15 +117,17 @@ always_ff @(posedge clk or negedge rst_n) begin
 		ind_cnt <= 0;
 		itr_cnt <= 0;
 	end else begin
-		ind_tvalid <= 1;
-		if (itr_cnt > 7) begin 
-			ind_tvalid <= 0;
+		if ((ind_cnt == 0) && (itr_cnt == 0)) begin
+			ind_tvalid <= 1;
 		end
 		if (ind_tready & ind_tvalid) begin
 			ind_cnt <= ind_cnt + 1;
-			if (ind_cnt == 32639) begin 
+			if (ind_cnt == (itr_cnt >= 7 ? 1791: 8127)) begin 
 				ind_cnt <= 0;
 				itr_cnt <= itr_cnt + 1;
+			end
+			if ((itr_cnt == 7) && (ind_cnt == 1791)) begin 
+				ind_tvalid <= 0;
 			end
 			
 		end
@@ -139,7 +148,8 @@ end
 initial begin
 	$readmemb("/home/zkq/Documents/MATLAB/testcode/mat_a.bintext", mat_a_mem);
 	// $readmemb("/home/zkq/Documents/MATLAB/testcode/mat_u.bintext", mat_u_mem);
-	$readmemh("/home/zkq/Documents/py/parajacobi_256.mem",ind_mem);
+	$readmemh("/home/zkq/Documents/py/parajacobi_128.mem",ind_mem);
+	$readmemh("/home/zkq/Documents/py/bitonicsort_128.mem",ind_mem_sort);
 	# 2000 while(1) begin
 		#10 if (done) begin
 			$writememb("/home/zkq/Documents/MATLAB/testcode/mat_a_result.bintext", mat_a_mem);

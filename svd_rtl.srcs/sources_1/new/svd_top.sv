@@ -24,7 +24,7 @@ module svd_top #(
 parameter
 	DATA_WIDTH = 27,
 	PROD_WIDTH = 48,
-	DATA_PARA  = 64,
+	DATA_PARA  = 128,
 	COL_A_MAX  = 252,
 	COL_U_MAX  = 4
 )(
@@ -33,12 +33,15 @@ parameter
 	input  ind_tvalid,
 	output ind_tready,
 	// memory-A
-	output [31:0]                     mat_a_wr_addr,
 	output                            mat_a_wr_clk,
+	output                            mat_a_wr_rst,
+	output [31:0]                     mat_a_wr_addr,
 	output [DATA_WIDTH*DATA_PARA-1:0] mat_a_wr_din,
 	output                            mat_a_wr_we,
-	output [31:0]                     mat_a_rd_addr,
+	
 	output                            mat_a_rd_clk,
+	output                            mat_a_rd_rst,
+	output [31:0]                     mat_a_rd_addr,
 	input  [DATA_WIDTH*DATA_PARA-1:0] mat_a_rd_dout,
 	output                            mat_a_rd_en,
 	// // memory_u 
@@ -51,8 +54,9 @@ parameter
 	// input  [DATA_WIDTH*DATA_PARA-1:0] mat_u_rd_dout,
 	// output                            mat_u_rd_en,
 	// memory_amp
-	output reg [15:0]                 amp_wr_addr,
 	output                            amp_wr_clk,
+	output                            amp_wr_rst,
+	output reg [15:0]                 amp_wr_addr,
 	output reg [PROD_WIDTH-1:0]       amp_wr_din,
 	output reg                        amp_wr_we,
 	// data size
@@ -66,16 +70,21 @@ parameter
 );
 
 reg signed [15:0] cnt_memload;
-
+reg [32:0] ind_tdata_r;
 
 // wire [15:0] col_max;
 
+wire mat_a_fifo_in_ready;
 wire mat_a_valid;
 wire mat_u_valid;
 wire mat_even;
 wire mat_a_last;
 wire mat_u_last;
 wire mat_sort;
+
+wire ind_1_fifo_in_ready;
+wire ind_2_fifo_in_ready;
+
 
 wire [DATA_WIDTH-1:0] mat_a_data [DATA_PARA-1:0];
 // wire [DATA_WIDTH-1:0] mat_u_data [DATA_PARA-1:0];
@@ -107,6 +116,7 @@ wire corr_reverse;
 
 wire [4:0] angle_nc;
 wire signed [DATA_WIDTH-1:0] angle;
+wire signed [DATA_WIDTH-1:0] angle_p1;
 wire signed [DATA_WIDTH-1:0] angle_div2;
 wire angle_reverse;
 wire angle_valid;
@@ -120,7 +130,7 @@ wire sn_cs_valid;
 
 reg  signed [DATA_WIDTH-1:0] sn_r;
 reg  signed [DATA_WIDTH-1:0] cs_r;
-reg  sn_cs_valid_r;
+// reg  sn_cs_valid_r;
 
 reg  signed [15:0] cnt_memstore;
 
@@ -138,14 +148,14 @@ wire [DATA_WIDTH-1:0] mat_a_rot_1 [DATA_PARA-1:0];
 wire [DATA_WIDTH-1:0] mat_a_rot_2 [DATA_PARA-1:0];
 // wire [DATA_WIDTH-1:0] mat_u_rot_1 [DATA_PARA-1:0];
 // wire [DATA_WIDTH-1:0] mat_u_rot_2 [DATA_PARA-1:0];
-wire [15:0] cnt_memstore_rot;
+wire signed [15:0] cnt_memstore_rot;
 wire mat_rot_tlast;
 
 reg  [DATA_WIDTH-1:0] mat_a_rot_sum_1 [DATA_PARA-1:0];
 reg  [DATA_WIDTH-1:0] mat_a_rot_sum_2 [DATA_PARA-1:0];
 // reg  [DATA_WIDTH-1:0] mat_u_rot_sum_1 [DATA_PARA-1:0];
 // reg  [DATA_WIDTH-1:0] mat_u_rot_sum_2 [DATA_PARA-1:0];
-reg  [15:0] cnt_memstore_rot_sum;
+reg  signed [15:0] cnt_memstore_rot_sum;
 reg  mat_rot_sum_tlast;
 //reg  [15:0] cnt_memstore_rot_sum_r;
 
@@ -161,20 +171,29 @@ genvar i;
 //clock
 assign mat_a_wr_clk = clk;
 assign mat_a_rd_clk = clk;
-assign mat_u_wr_clk = clk;
-assign mat_u_rd_clk = clk;
 assign amp_wr_clk   = clk;
+assign mat_a_wr_rst = ~rst_n;
+assign mat_a_rd_rst = ~rst_n;
+assign amp_wr_rst   = ~rst_n;
 
 // load counter
 // assign col_max =  (col_a * 2) + (col_u * 2);
-assign ind_tready = (cnt_memload >= (2 * (COL_A_MAX + col_u) - 1));
+assign ind_tready = ((cnt_memload == -1)|| (cnt_memload >= (2 * (COL_A_MAX + col_u) - 1)))
+	& mat_a_fifo_in_ready & ind_1_fifo_in_ready & ind_2_fifo_in_ready;
+always_ff @(posedge clk or negedge rst_n) begin : proc_ind_tdata_r
+	if(~rst_n) begin
+		ind_tdata_r <= 0;
+	end else if (ind_tvalid & ind_tready)begin
+		ind_tdata_r <= ind_tdata;
+	end
+end
 
 always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memload
 	if(~rst_n) begin
 		cnt_memload <= -1;
 	end else begin
 		if (cnt_memload == -1) begin
-			if (ind_tvalid) begin
+			if (ind_tvalid & ind_tready) begin
 				cnt_memload <= 0;
 			end
 		end else begin
@@ -194,16 +213,16 @@ always_ff @(posedge clk or negedge rst_n) begin : proc_cnt_memload
 end
 
 // fetch data from memory
-assign mat_a_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) 
+assign mat_a_rd_addr = ((~cnt_memload[0]) ? ind_tdata_r[31:16] : ind_tdata_r[15:0]) 
 	* (COL_A_MAX + COL_U_MAX) + cnt_memload[15:1];
 // assign mat_u_rd_addr = ((~cnt_memload[0]) ? ind_tdata[31:16] : ind_tdata[15:0]) * COL_U_MAX + cnt_memload[15:1];
-assign mat_a_rd_en   = (cnt_memload != -1);
+assign mat_a_rd_en   = 1; //(cnt_memload != -1);
 // assign mat_u_rd_en   = (cnt_memload != -1) & (cnt_memload[15:1] < col_u);
 
 c_shift_ram_0 mat_a_valid_shift ((cnt_memload != -1 & cnt_memload <  (COL_A_MAX * 2)), clk, mat_a_valid);
 c_shift_ram_0 mat_u_valid_shift ((cnt_memload != -1 & cnt_memload >= (COL_A_MAX * 2)), clk, mat_u_valid);
 c_shift_ram_0 mat_even_shift    (cnt_memload[0], clk, mat_even);
-c_shift_ram_0 mat_sort_shift    (ind_tdata[32] , clk, mat_sort);
+c_shift_ram_0 mat_sort_shift    (ind_tdata_r[32] , clk, mat_sort);
 c_shift_ram_0 mat_a_last_shift  ((cnt_memload == 2 * col_a - 1) , clk, mat_a_last);
 c_shift_ram_0 mat_u_last_shift  ((cnt_memload == 2 * (COL_A_MAX + col_u) - 1), clk, mat_u_last);
 
@@ -217,19 +236,34 @@ for (i = 0; i < DATA_PARA; i = i + 1) begin
 end
 
 // data fifo
-axis_data_fifo_w27 fifo_mat_a(
+axis_data_fifo_w27 fifo_mat_a_l(
 	.s_axis_aclk    (clk), 
 	.s_axis_aresetn (rst_n), 
 	.s_axis_tvalid  (mat_a_valid | mat_u_valid), 
-	.s_axis_tready  (), 
-	.s_axis_tdata   (mat_a_rd_dout), 
+	.s_axis_tready  (mat_a_fifo_in_ready), 
+	.s_axis_tdata   (mat_a_rd_dout[DATA_PARA*DATA_WIDTH/2-1:0]), 
 	.s_axis_tlast   (mat_u_last), 
 	.s_axis_tuser   (mat_a_last),
 	.m_axis_tvalid  (), 
 	.m_axis_tready  (mat_a_fifo_tready),
-	.m_axis_tdata   (mat_a_fifo_dout),
+	.m_axis_tdata   (mat_a_fifo_dout[DATA_PARA*DATA_WIDTH/2-1:0]),
 	.m_axis_tlast   (mat_u_fifo_tlast),
 	.m_axis_tuser   (mat_a_fifo_tlast)
+);
+
+axis_data_fifo_w27 fifo_mat_a_h(
+	.s_axis_aclk    (clk), 
+	.s_axis_aresetn (rst_n), 
+	.s_axis_tvalid  (mat_a_valid | mat_u_valid), 
+	.s_axis_tready  (), 
+	.s_axis_tdata   (mat_a_rd_dout[DATA_PARA*DATA_WIDTH-1:DATA_PARA*DATA_WIDTH/2]), 
+	.s_axis_tlast   (), 
+	.s_axis_tuser   (),
+	.m_axis_tvalid  (), 
+	.m_axis_tready  (mat_a_fifo_tready),
+	.m_axis_tdata   (mat_a_fifo_dout[DATA_PARA*DATA_WIDTH-1:DATA_PARA*DATA_WIDTH/2]),
+	.m_axis_tlast   (),
+	.m_axis_tuser   ()
 );
 
 // axis_data_fifo_w27 fifo_mat_u(
@@ -250,19 +284,19 @@ axis_data_fifo_w27 fifo_mat_a(
 axis_data_fifo_32 fifo_ind_1(
 	.s_axis_aclk    (clk), 
 	.s_axis_aresetn (rst_n), 
-	.s_axis_tvalid  (ind_tready), 
-	.s_axis_tready  (), 
-	.s_axis_tdata   (ind_tdata),
+	.s_axis_tvalid  (ind_tready & ind_tvalid), 
+	.s_axis_tready  (ind_1_fifo_in_ready), 
+	.s_axis_tdata   (ind_tdata[31:0]),
 	.m_axis_tvalid  (), 
-	.m_axis_tready  (autocorr_b_r),
+	.m_axis_tready  (autocorr_b_valid_r),
 	.m_axis_tdata   (ind_corr)
 );
 axis_data_fifo_32 fifo_ind_2(
 	.s_axis_aclk    (clk), 
 	.s_axis_aresetn (rst_n), 
-	.s_axis_tvalid  (ind_tready), 
-	.s_axis_tready  (), 
-	.s_axis_tdata   (ind_tdata),
+	.s_axis_tvalid  (ind_tready & ind_tvalid), 
+	.s_axis_tready  (ind_2_fifo_in_ready), 
+	.s_axis_tdata   (ind_tdata[31:0]),
 	.m_axis_tvalid  (ind_memstore_valid), 
 	.m_axis_tready  (mat_rot_sum_tlast),
 	.m_axis_tdata   (ind_memstore)
@@ -273,8 +307,8 @@ for (i = 0; i < DATA_PARA; i = i + 1) begin
 	mult_gen_0 multi_a_b(clk, mat_a_data[i], mat_a_data_r[i], prod_a_b[i]);
 end
 
-sum_64 #(PROD_WIDTH) sum_64_a_a (clk, prod_a_a, sum_a_a);
-sum_64 #(PROD_WIDTH) sum_64_a_b (clk, prod_a_b, sum_a_b);
+sum_128 #(PROD_WIDTH) sum_64_a_a (clk, prod_a_a, sum_a_a);
+sum_128 #(PROD_WIDTH) sum_64_a_b (clk, prod_a_b, sum_a_b);
 
 c_shift_ram_1 sum_valid_shift (mat_a_valid, clk, sum_a_valid);
 c_shift_ram_1 sum_even_shift  (mat_even,    clk, sum_even);
@@ -321,13 +355,13 @@ cordic_atan cordic_atan_inst (
 	.aresetn                 (rst_n), 
 	.s_axis_cartesian_tvalid (autocorr_b_valid), 
 	.s_axis_cartesian_tuser  (corr_reverse),
-	.s_axis_cartesian_tdata  ({corr_a_b[PROD_WIDTH-2:PROD_WIDTH-33], autocorr_bma[PROD_WIDTH-1:PROD_WIDTH-32]}), 
+	.s_axis_cartesian_tdata  ({corr_a_b[PROD_WIDTH-2:PROD_WIDTH-32], 1'b1, autocorr_bma[PROD_WIDTH-1:PROD_WIDTH-31], 1'b1}), 
 	.m_axis_dout_tvalid      (angle_valid), 
 	.m_axis_dout_tuser       (angle_reverse),
 	.m_axis_dout_tdata       ({angle_nc, angle})
 );
-
-assign angle_div2 = angle_reverse ? (angle / 2 + (1 << (DATA_WIDTH - 4))) : (angle / 2);
+assign angle_p1 = {{3{angle[DATA_WIDTH-4]}}, angle[DATA_WIDTH-4:0]}; // forced to [-pi/2, pi/2]
+assign angle_div2 = angle_reverse ? (angle_p1 / 2 + (1 << (DATA_WIDTH - 4))) : (angle_p1 / 2);
 
 cordic_sincos cordic_sincos_inst(
 	.aclk                    (clk), 
@@ -344,13 +378,13 @@ always_ff @(posedge clk) begin : proc_sn_cs
 	end
 end
 
-always_ff @(posedge clk or negedge rst_n) begin : proc_sn_cs_valid_r
-	if(~rst_n) begin
-		sn_cs_valid_r <= 0;
-	end else begin
-		sn_cs_valid_r <= sn_cs_valid;
-	end
-end
+// always_ff @(posedge clk or negedge rst_n) begin : proc_sn_cs_valid_r
+// 	if(~rst_n) begin
+// 		sn_cs_valid_r <= 0;
+// 	end else begin
+// 		sn_cs_valid_r <= sn_cs_valid;
+// 	end
+// end
 
 // store counter
 //assign mat_fifo_tlast = (mat_a_fifo_tlast | ~mat_a_fifo_tready) & (mat_u_fifo_tlast | ~mat_u_fifo_tready);

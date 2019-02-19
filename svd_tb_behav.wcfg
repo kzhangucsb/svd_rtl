@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="svd_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="svd_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="219400001fs"></ZoomEndTime>
+      <Cursor1Time time="12450000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="206"></NameColumnWidth>
+      <ValueColumnWidth column_width="204"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="64" />
+   <wvobject type="logic" fp_name="/svd_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/rst_n">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/done">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/ind_cnt">
+      <obj_property name="ElementShortName">ind_cnt[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ind_cnt[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/itr_cnt">
+      <obj_property name="ElementShortName">itr_cnt[15:0]</obj_property>
+      <obj_property name="ObjectShortName">itr_cnt[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/ind_tdata">
+      <obj_property name="ElementShortName">ind_tdata[32:0]</obj_property>
+      <obj_property name="ObjectShortName">ind_tdata[32:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/ind_tvalid">
+      <obj_property name="ElementShortName">ind_tvalid</obj_property>
+      <obj_property name="ObjectShortName">ind_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/ind_tready">
+      <obj_property name="ElementShortName">ind_tready</obj_property>
+      <obj_property name="ObjectShortName">ind_tready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/mat_a_wr_addr">
+      <obj_property name="ElementShortName">mat_a_wr_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mat_a_wr_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/mat_a_wr_we">
+      <obj_property name="ElementShortName">mat_a_wr_we</obj_property>
+      <obj_property name="ObjectShortName">mat_a_wr_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/mat_a_rd_addr">
+      <obj_property name="ElementShortName">mat_a_rd_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mat_a_rd_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/mat_a_rd_en">
+      <obj_property name="ElementShortName">mat_a_rd_en</obj_property>
+      <obj_property name="ObjectShortName">mat_a_rd_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/amp_wr_addr">
+      <obj_property name="ElementShortName">amp_wr_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">amp_wr_addr[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/amp_wr_din">
+      <obj_property name="ElementShortName">amp_wr_din[47:0]</obj_property>
+      <obj_property name="ObjectShortName">amp_wr_din[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/amp_wr_we">
+      <obj_property name="ElementShortName">amp_wr_we</obj_property>
+      <obj_property name="ObjectShortName">amp_wr_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cnt_memload">
+      <obj_property name="ElementShortName">cnt_memload[15:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_memload[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/fifo_ind_1/s_axis_tready">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_a_valid">
+      <obj_property name="ElementShortName">mat_a_valid</obj_property>
+      <obj_property name="ObjectShortName">mat_a_valid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_u_valid">
+      <obj_property name="ElementShortName">mat_u_valid</obj_property>
+      <obj_property name="ObjectShortName">mat_u_valid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_even">
+      <obj_property name="ElementShortName">mat_even</obj_property>
+      <obj_property name="ObjectShortName">mat_even</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_a_last">
+      <obj_property name="ElementShortName">mat_a_last</obj_property>
+      <obj_property name="ObjectShortName">mat_a_last</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_u_last">
+      <obj_property name="ElementShortName">mat_u_last</obj_property>
+      <obj_property name="ObjectShortName">mat_u_last</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_sort">
+      <obj_property name="ElementShortName">mat_sort</obj_property>
+      <obj_property name="ObjectShortName">mat_sort</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/sum_a_a">
+      <obj_property name="ElementShortName">sum_a_a[47:0]</obj_property>
+      <obj_property name="ObjectShortName">sum_a_a[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/sum_a_b">
+      <obj_property name="ElementShortName">sum_a_b[47:0]</obj_property>
+      <obj_property name="ObjectShortName">sum_a_b[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/sum_a_valid">
+      <obj_property name="ElementShortName">sum_a_valid</obj_property>
+      <obj_property name="ObjectShortName">sum_a_valid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/sum_even">
+      <obj_property name="ElementShortName">sum_even</obj_property>
+      <obj_property name="ObjectShortName">sum_even</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/sum_a_last">
+      <obj_property name="ElementShortName">sum_a_last</obj_property>
+      <obj_property name="ObjectShortName">sum_a_last</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/sum_sort">
+      <obj_property name="ElementShortName">sum_sort</obj_property>
+      <obj_property name="ObjectShortName">sum_sort</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/autocorr_a">
+      <obj_property name="ElementShortName">autocorr_a[47:0]</obj_property>
+      <obj_property name="ObjectShortName">autocorr_a[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/autocorr_b">
+      <obj_property name="ElementShortName">autocorr_b[47:0]</obj_property>
+      <obj_property name="ObjectShortName">autocorr_b[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/autocorr_b_r">
+      <obj_property name="ElementShortName">autocorr_b_r[47:0]</obj_property>
+      <obj_property name="ObjectShortName">autocorr_b_r[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/autocorr_bma">
+      <obj_property name="ElementShortName">autocorr_bma[47:0]</obj_property>
+      <obj_property name="ObjectShortName">autocorr_bma[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/corr_a_b">
+      <obj_property name="ElementShortName">corr_a_b[47:0]</obj_property>
+      <obj_property name="ObjectShortName">corr_a_b[47:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/ind_corr">
+      <obj_property name="ElementShortName">ind_corr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ind_corr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="vbus" fp_name="vbus297">
+      <obj_property name="label">tdata_high</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">14</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[63]">
+         <obj_property name="ElementShortName">[63]</obj_property>
+         <obj_property name="ObjectShortName">[63]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[62]">
+         <obj_property name="ElementShortName">[62]</obj_property>
+         <obj_property name="ObjectShortName">[62]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[61]">
+         <obj_property name="ElementShortName">[61]</obj_property>
+         <obj_property name="ObjectShortName">[61]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[60]">
+         <obj_property name="ElementShortName">[60]</obj_property>
+         <obj_property name="ObjectShortName">[60]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[59]">
+         <obj_property name="ElementShortName">[59]</obj_property>
+         <obj_property name="ObjectShortName">[59]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[58]">
+         <obj_property name="ElementShortName">[58]</obj_property>
+         <obj_property name="ObjectShortName">[58]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[57]">
+         <obj_property name="ElementShortName">[57]</obj_property>
+         <obj_property name="ObjectShortName">[57]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[56]">
+         <obj_property name="ElementShortName">[56]</obj_property>
+         <obj_property name="ObjectShortName">[56]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[55]">
+         <obj_property name="ElementShortName">[55]</obj_property>
+         <obj_property name="ObjectShortName">[55]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[54]">
+         <obj_property name="ElementShortName">[54]</obj_property>
+         <obj_property name="ObjectShortName">[54]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[53]">
+         <obj_property name="ElementShortName">[53]</obj_property>
+         <obj_property name="ObjectShortName">[53]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[52]">
+         <obj_property name="ElementShortName">[52]</obj_property>
+         <obj_property name="ObjectShortName">[52]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[51]">
+         <obj_property name="ElementShortName">[51]</obj_property>
+         <obj_property name="ObjectShortName">[51]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[50]">
+         <obj_property name="ElementShortName">[50]</obj_property>
+         <obj_property name="ObjectShortName">[50]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[49]">
+         <obj_property name="ElementShortName">[49]</obj_property>
+         <obj_property name="ObjectShortName">[49]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[48]">
+         <obj_property name="ElementShortName">[48]</obj_property>
+         <obj_property name="ObjectShortName">[48]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[47]">
+         <obj_property name="ElementShortName">[47]</obj_property>
+         <obj_property name="ObjectShortName">[47]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[46]">
+         <obj_property name="ElementShortName">[46]</obj_property>
+         <obj_property name="ObjectShortName">[46]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[45]">
+         <obj_property name="ElementShortName">[45]</obj_property>
+         <obj_property name="ObjectShortName">[45]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[44]">
+         <obj_property name="ElementShortName">[44]</obj_property>
+         <obj_property name="ObjectShortName">[44]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[43]">
+         <obj_property name="ElementShortName">[43]</obj_property>
+         <obj_property name="ObjectShortName">[43]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[42]">
+         <obj_property name="ElementShortName">[42]</obj_property>
+         <obj_property name="ObjectShortName">[42]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[41]">
+         <obj_property name="ElementShortName">[41]</obj_property>
+         <obj_property name="ObjectShortName">[41]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[40]">
+         <obj_property name="ElementShortName">[40]</obj_property>
+         <obj_property name="ObjectShortName">[40]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[39]">
+         <obj_property name="ElementShortName">[39]</obj_property>
+         <obj_property name="ObjectShortName">[39]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[38]">
+         <obj_property name="ElementShortName">[38]</obj_property>
+         <obj_property name="ObjectShortName">[38]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[37]">
+         <obj_property name="ElementShortName">[37]</obj_property>
+         <obj_property name="ObjectShortName">[37]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[36]">
+         <obj_property name="ElementShortName">[36]</obj_property>
+         <obj_property name="ObjectShortName">[36]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[35]">
+         <obj_property name="ElementShortName">[35]</obj_property>
+         <obj_property name="ObjectShortName">[35]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[34]">
+         <obj_property name="ElementShortName">[34]</obj_property>
+         <obj_property name="ObjectShortName">[34]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[33]">
+         <obj_property name="ElementShortName">[33]</obj_property>
+         <obj_property name="ObjectShortName">[33]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[32]">
+         <obj_property name="ElementShortName">[32]</obj_property>
+         <obj_property name="ObjectShortName">[32]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="vbus" fp_name="vbus465">
+      <obj_property name="label">tdata_low</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">14</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[31]">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">[31]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[30]">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">[30]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[29]">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">[29]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[28]">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">[28]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[27]">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">[27]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[26]">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">[26]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[25]">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">[25]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[24]">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">[24]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[23]">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">[23]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[22]">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">[22]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[21]">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">[21]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[20]">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">[20]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[19]">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">[19]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[18]">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">[18]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[17]">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">[17]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[16]">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">[16]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[15]">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">[15]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[14]">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">[14]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[13]">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">[13]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[12]">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">[12]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[11]">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">[11]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[10]">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">[10]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[9]">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">[9]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[8]">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">[8]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[7]">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">[7]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[6]">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">[6]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[5]">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">[5]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[4]">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">[4]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[3]">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">[3]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[2]">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[1]">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/svd_tb/svd_inst/cordic_atan_inst/s_axis_cartesian_tdata[0]">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/autocorr_b_valid">
+      <obj_property name="ElementShortName">autocorr_b_valid</obj_property>
+      <obj_property name="ObjectShortName">autocorr_b_valid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/autocorr_b_valid_r">
+      <obj_property name="ElementShortName">autocorr_b_valid_r</obj_property>
+      <obj_property name="ObjectShortName">autocorr_b_valid_r</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/corr_sort">
+      <obj_property name="ElementShortName">corr_sort</obj_property>
+      <obj_property name="ObjectShortName">corr_sort</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/corr_reverse">
+      <obj_property name="ElementShortName">corr_reverse</obj_property>
+      <obj_property name="ObjectShortName">corr_reverse</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/angle">
+      <obj_property name="ElementShortName">angle[26:0]</obj_property>
+      <obj_property name="ObjectShortName">angle[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">24</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/angle_p1">
+      <obj_property name="ElementShortName">angle_p1[26:0]</obj_property>
+      <obj_property name="ObjectShortName">angle_p1[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">24</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/angle_div2">
+      <obj_property name="ElementShortName">angle_div2[26:0]</obj_property>
+      <obj_property name="ObjectShortName">angle_div2[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">24</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/angle_reverse">
+      <obj_property name="ElementShortName">angle_reverse</obj_property>
+      <obj_property name="ObjectShortName">angle_reverse</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/angle_valid">
+      <obj_property name="ElementShortName">angle_valid</obj_property>
+      <obj_property name="ObjectShortName">angle_valid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/sn">
+      <obj_property name="ElementShortName">sn[26:0]</obj_property>
+      <obj_property name="ObjectShortName">sn[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">25</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cs">
+      <obj_property name="ElementShortName">cs[26:0]</obj_property>
+      <obj_property name="ObjectShortName">cs[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">25</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/sn_cs_valid">
+      <obj_property name="ElementShortName">sn_cs_valid</obj_property>
+      <obj_property name="ObjectShortName">sn_cs_valid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/sn_r">
+      <obj_property name="ElementShortName">sn_r[26:0]</obj_property>
+      <obj_property name="ObjectShortName">sn_r[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">25</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cs_r">
+      <obj_property name="ElementShortName">cs_r[26:0]</obj_property>
+      <obj_property name="ObjectShortName">cs_r[26:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">25</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cnt_memstore">
+      <obj_property name="ElementShortName">cnt_memstore[15:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_memstore[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_a_fifo_tready">
+      <obj_property name="ElementShortName">mat_a_fifo_tready</obj_property>
+      <obj_property name="ObjectShortName">mat_a_fifo_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_a_fifo_tlast">
+      <obj_property name="ElementShortName">mat_a_fifo_tlast</obj_property>
+      <obj_property name="ObjectShortName">mat_a_fifo_tlast</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_u_fifo_tlast">
+      <obj_property name="ElementShortName">mat_u_fifo_tlast</obj_property>
+      <obj_property name="ObjectShortName">mat_u_fifo_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cnt_memstore_rot">
+      <obj_property name="ElementShortName">cnt_memstore_rot[15:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_memstore_rot[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_rot_tlast">
+      <obj_property name="ElementShortName">mat_rot_tlast</obj_property>
+      <obj_property name="ObjectShortName">mat_rot_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/cnt_memstore_rot_sum">
+      <obj_property name="ElementShortName">cnt_memstore_rot_sum[15:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_memstore_rot_sum[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_rot_sum_tlast">
+      <obj_property name="ElementShortName">mat_rot_sum_tlast</obj_property>
+      <obj_property name="ObjectShortName">mat_rot_sum_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/svd_tb/svd_inst/ind_memstore">
+      <obj_property name="ElementShortName">ind_memstore[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ind_memstore[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/ind_memstore_valid">
+      <obj_property name="ElementShortName">ind_memstore_valid</obj_property>
+      <obj_property name="ObjectShortName">ind_memstore_valid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/mat_a_fifo_in_ready">
+      <obj_property name="ElementShortName">mat_a_fifo_in_ready</obj_property>
+      <obj_property name="ObjectShortName">mat_a_fifo_in_ready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/ind_1_fifo_in_ready">
+      <obj_property name="ElementShortName">ind_1_fifo_in_ready</obj_property>
+      <obj_property name="ObjectShortName">ind_1_fifo_in_ready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/svd_tb/svd_inst/ind_2_fifo_in_ready">
+      <obj_property name="ElementShortName">ind_2_fifo_in_ready</obj_property>
+      <obj_property name="ObjectShortName">ind_2_fifo_in_ready</obj_property>
+   </wvobject>
+</wave_config>
